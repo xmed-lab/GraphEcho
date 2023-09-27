@@ -12,7 +12,7 @@
 </a>
 
 <a src="https://img.shields.io/badge/%F0%9F%9A%80-XiaoweiXu's Github-blue.svg?style=flat-square" href="https://github.com/XiaoweiXu/CardiacUDA-dataset">
-<img src="https://img.shields.io/badge/%F0%9F%9A%80-XiaoweiXu's Github-blue.svg?style=flat-square">
+<img src="https://img.shields.io/badge/%F0%9F%9A%80-Xiaowei Xu's Github-blue.svg?style=flat-square">
 </a>
 
 </div>
@@ -60,36 +60,36 @@
  * For different tasks, the composition of data sets have significant different, so there is no repetition in this file;
 
 
-#### *1.1. Download The **CAMUS**.*
- * The detail of CAMUS, please refer to: https://www.creatis.insa-lyon.fr/Challenge/camus/index.html/.
+   #### *1.1. Download The **CAMUS**.*
+   :speech_balloon: The detail of CAMUS, please refer to: https://www.creatis.insa-lyon.fr/Challenge/camus/index.html/.
 
- 1. Download & Unzip the dataset.
+   1. Download & Unzip the dataset.
 
-    - The ***CAMUS dataset*** is composed as: /testing & /training.
+      The ***CAMUS dataset*** is composed as: /testing & /training.
 
- 2. The source code of loading the CAMUS dataset exist in path :
+   2. The source code of loading the CAMUS dataset exist in path :
 
-    ```python
-    ..\datasets\camus.py
-    and modify the dataset path in
-    ..\train_camus_echo.py
-    ```
+      ```python
+      ..\datasets\camus.py
+      and modify the dataset path in
+      ..\train_camus_echo.py
+      ```
 
-#### *1.2. Download The **EchoNet**.*
+   #### *1.2. Download The **EchoNet**.*
 
- * The detail of EchoNet, please refer to: https://echonet.github.io/dynamic/.
+   :speech_balloon: The detail of EchoNet, please refer to: https://echonet.github.io/dynamic/.
 
- 1. Download & Unzip the dataset.
+   1. Download & Unzip the dataset.
 
-    - The ***EchoNet*** dataset is consist of: /Video, FileList.csv & VolumeTracings.csv.
+      - The ***EchoNet*** dataset is consist of: /Video, FileList.csv & VolumeTracings.csv.
 
- 2. The source code of loading the Echonet dataset exist in path :
+   2. The source code of loading the Echonet dataset exist in path :
 
-    ```python
-    ..\datasets\echo.py
-    and modify the dataset path in
-    ..\train_camus_echo.py
-    ```
+      ```python
+      ..\datasets\echo.py
+      and modify the dataset path in
+      ..\train_camus_echo.py
+      ```
 
 ## *2. CardiacUDA*
  1.  Please access the dataset through : [XiaoweiXu's Github](https://github.com/XiaoweiXu/CardiacUDA-dataset)
@@ -107,7 +107,8 @@
         #                        views_images: {image_path},
         #                        views_labels: {label_path},}}}
         ```
-## Training
+
+## :feet: Training
 
 1. In this framework, after the parameters are configured in the file **train_cardiac_uda.py** and **train_camus_echo.py**, you only need to use the command:
 
