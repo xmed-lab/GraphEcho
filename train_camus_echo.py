@@ -1,3 +1,7 @@
+# MIT License
+# Copyright (c) 2023 Jiewen Yang
+# Please refer to the paper : https://arxiv.org/abs/2309.11145.
+
 import os
 import sys
 import argparse
@@ -89,8 +93,8 @@ class Trainer():
                 self.dis_dict[key].to(self.device)
 
         if self.temporal_graph:
-            self.train_dataset_source_temp = Seg_PAHDataset(infos, root, is_train=True, set_select=['gy'], view_num=self.view_num, seg_parts=self.seg_parts, single_frame=False)
-            self.train_dataset_target_temp = Seg_PAHDataset(infos, root, is_train=True, set_select=['rmyy'], view_num=self.view_num, seg_parts=self.seg_parts, single_frame=False, source_domain=False)
+            self.train_dataset_source_temp = DataLoaderCamus(dataset_path='please indicate your CAMUS dataset path',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="train", img_res=(124, 124), img_crop=(112, 112))
+            self.train_dataset_target_temp = Echo(root='please indicate your Echonet dataset path', validation=False, split='train')
 
             self.train_loader_source_temp = DataLoader(self.train_dataset_source_temp, batch_size=4, shuffle=True, num_workers=config['train']['num_workers'])
             self.train_loader_target_temp = DataLoader(self.train_dataset_target_temp, batch_size=4, shuffle=True, num_workers=config['train']['num_workers'])
@@ -98,19 +102,19 @@ class Trainer():
             self.source_data_num, self.target_data_num = self.train_dataset_source_temp.num_data, self.train_dataset_target_temp.num_data
 
             self.tgcn_dict, self.g_optimizer_dict, self.g_scheduler_dict = dict(), dict(), dict()
-            #self.tgcn_dict['tgcn_p2'] = TGCN(input_dim=256, hidden_dim=256, soucre_class=self.source_data_num, target_class=self.target_data_num)
-            #self.tgcn_dict['tgcn_p3'] = TGCN(input_dim=256, hidden_dim=256, soucre_class=self.source_data_num, target_class=self.target_data_num)
-            #self.tgcn_dict['tgcn_p4'] = TGCN(input_dim=256, hidden_dim=256, soucre_class=self.source_data_num, target_class=self.target_data_num)
+            # self.tgcn_dict['tgcn_p2'] = TGCN(input_dim=256, hidden_dim=256, soucre_class=self.source_data_num, target_class=self.target_data_num)
+            # self.tgcn_dict['tgcn_p3'] = TGCN(input_dim=256, hidden_dim=256, soucre_class=self.source_data_num, target_class=self.target_data_num)
+            # self.tgcn_dict['tgcn_p4'] = TGCN(input_dim=256, hidden_dim=256, soucre_class=self.source_data_num, target_class=self.target_data_num)
             self.tgcn_dict['tgcn_p5'] = TGCN(input_dim=256, hidden_dim=256, clip_shape=(8, 8, 8), soucre_class=self.source_data_num, target_class=self.target_data_num)
 
-            #self.g_optimizer_dict['tgcn_p2'] = self.set_optimizer(self.tgcn_dict['tgcn_p2'], config['tgcn']['opt'])
-            #self.g_optimizer_dict['tgcn_p3'] = self.set_optimizer(self.tgcn_dict['tgcn_p3'], config['tgcn']['opt'])
-            #self.g_optimizer_dict['tgcn_p4'] = self.set_optimizer(self.tgcn_dict['tgcn_p4'], config['tgcn']['opt'])
+            # self.g_optimizer_dict['tgcn_p2'] = self.set_optimizer(self.tgcn_dict['tgcn_p2'], config['tgcn']['opt'])
+            # self.g_optimizer_dict['tgcn_p3'] = self.set_optimizer(self.tgcn_dict['tgcn_p3'], config['tgcn']['opt'])
+            # self.g_optimizer_dict['tgcn_p4'] = self.set_optimizer(self.tgcn_dict['tgcn_p4'], config['tgcn']['opt'])
             self.g_optimizer_dict['tgcn_p5'] = self.set_optimizer(self.tgcn_dict['tgcn_p5'], config['tgcn']['opt'])
 
-            #self.g_scheduler_dict['tgcn_p2'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p2'], config['tgcn']['sch'])
-            #self.g_scheduler_dict['tgcn_p3'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p3'], config['tgcn']['sch'])
-            #self.g_scheduler_dict['tgcn_p4'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p4'], config['tgcn']['sch'])
+            # self.g_scheduler_dict['tgcn_p2'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p2'], config['tgcn']['sch'])
+            # self.g_scheduler_dict['tgcn_p3'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p3'], config['tgcn']['sch'])
+            # self.g_scheduler_dict['tgcn_p4'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p4'], config['tgcn']['sch'])
             self.g_scheduler_dict['tgcn_p5'] = self.set_scheduler(self.g_optimizer_dict['tgcn_p5'], config['tgcn']['sch'])
 
             for key in self.tgcn_dict.keys():
@@ -148,8 +152,8 @@ class Trainer():
 
         self.print_allow = True if self.local_rank == config['train']['enable_GPUs_id'][0] else False
         
-        self.train_dataset_source = DataLoaderCamus(dataset_path='/home/jyangcu/Dataset/camus_dataset',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="train", img_res=(124, 124), img_crop=(112, 112))
-        self.train_dataset_target = Echo(root='/home/jyangcu/Dataset/Heart-videos', validation=False, split='train')
+        self.train_dataset_source = DataLoaderCamus(dataset_path='please indicate your CAMUS dataset path',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="train", img_res=(124, 124), img_crop=(112, 112))
+        self.train_dataset_target = Echo(root='please indicate your Echonet dataset path', validation=False, split='train')
 
         self.sampler = None
         if self.distributed:
@@ -160,16 +164,16 @@ class Trainer():
         if self.graph_matching:
             self.train_loader_target = DataLoader(self.train_dataset_target, batch_size=config['train']['batch_size'] * 21, shuffle=True, num_workers=config['train']['num_workers'])
 
-        self.valid_echo_dataset  = Echo(root='/home/jyangcu/Dataset/Heart-videos', validation=True, split='VAL', target_type='LargeTrace')
+        self.valid_echo_dataset  = Echo(root='please indicate your Echonet dataset path', validation=True, split='VAL', target_type='LargeTrace')
         self.valid_echo_loader  = DataLoader(self.valid_echo_dataset, batch_size=1, shuffle=False, num_workers=config['train']['num_workers'])
 
-        self.test_echo_dataset  = Echo(root='/home/jyangcu/Dataset/Heart-videos', validation=True, split='TEST', target_type='LargeTrace')
+        self.test_echo_dataset  = Echo(root='please indicate your Echonet dataset path', validation=True, split='TEST', target_type='LargeTrace')
         self.test_echo_loader  = DataLoader(self.test_echo_dataset, batch_size=1, shuffle=False, num_workers=config['train']['num_workers'])
         
-        self.valid_camus_dataset  = DataLoaderCamus(dataset_path='/home/jyangcu/Dataset/camus_dataset',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="valid", img_res=(124, 124), img_crop=(112, 112))
+        self.valid_camus_dataset  = DataLoaderCamus(dataset_path='please indicate your CAMUS dataset path',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="valid", img_res=(124, 124), img_crop=(112, 112))
         self.valid_camus_loader  = DataLoader(self.valid_camus_dataset, batch_size=1, shuffle=False, num_workers=config['train']['num_workers'])
 
-        self.test_camus_dataset  = DataLoaderCamus(dataset_path='/home/jyangcu/Dataset/camus_dataset',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="test", img_res=(124, 124), img_crop=(112, 112))
+        self.test_camus_dataset  = DataLoaderCamus(dataset_path='please indicate your CAMUS dataset path',input_name="4CH_ED",target_name="4CH_ED",condition_name="4CH_ED_gt",stage="test", img_res=(124, 124), img_crop=(112, 112))
         self.test_camus_loader  = DataLoader(self.test_camus_dataset, batch_size=1, shuffle=False, num_workers=config['train']['num_workers'])
         
 
@@ -335,10 +339,9 @@ class Trainer():
                 self.logger.info(print_info)
                 
                 self.validation(self.valid_camus_loader, 'Inner-Val')
-                self.validation(self.test_camus_loader, 'Inner-Test')
+                # self.validation(self.test_camus_loader, 'Inner-Test')
                 self.validation(self.valid_echo_loader, 'Target Domain - Valid')
-                self.validation(self.test_echo_loader, 'Target Domain - Test')
-                #self.validation(self.test_target_video_loader, 'Target Domain - Video Test', is_video=True)
+                # self.validation(self.test_echo_loader, 'Target Domain - Test')
                 if self.epoch > 0:
                     self.save(self.epoch)
                     print("model saved")
@@ -463,9 +466,6 @@ class Trainer():
             data = torch.load(net_path, map_location=self.device)
             data['network'] = {k.replace('module.', ''): v for k, v in data['network'].items() if k.replace('module.', '') in self.network.state_dict()}
             self.network.load_state_dict(data['network'])
-
-            #data = torch.load(opt_path, map_location=self.device)
-            #self.optimizer.load_state_dict(data['optimizer'])
 
         else:
             if self.local_rank == config['train']['enable_GPUs_id'][0] == 0:
