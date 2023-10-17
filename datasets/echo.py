@@ -126,7 +126,6 @@ class Echo(Dataset):
             # Load traces
             self.frames = collections.defaultdict(list)
             self.trace = collections.defaultdict(_defaultdict_of_lists)
-            self.set_length = 
 
             with open(os.path.join(self.root, "VolumeTracings.csv")) as f:
                 header = f.readline().strip().split(",")
