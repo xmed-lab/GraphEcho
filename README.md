@@ -74,6 +74,7 @@
       and modify the dataset path in
       ..\train_camus_echo.py
       ```
+      New Version : We have updated the infos.npy in our new released code
 
    #### *1.2. Download The **EchoNet**.*
 

@@ -36,7 +36,7 @@ random.seed(7777)
 np.random.seed(7777)
 
 class Seg_Cardiac_UDA_Dataset(Dataset):
-    def __init__(self, infos, root, is_train, repeat=1, data_list=None, set_select=['Site_G'], view_num=['2'], label_type='mPAP', 
+    def __init__(self, infos, root, is_train, repeat=1, data_list=None, set_select=['Site_G'], view_num=['2'], 
                  spatial_size=328, crop_size=256, transform=None, single_frame=True, total_length=40, clip_length=8, seg_parts=True, source_domain=True, fill_mask=False):
         self.rort = root
         self.is_train = is_train
@@ -79,8 +79,6 @@ class Seg_Cardiac_UDA_Dataset(Dataset):
                     if (k in images.keys() and k in masks.keys()):
                         if (images[k] is not None and masks[k] is not None):
                             image_list = np.array(nib.load(images[k]).dataobj)
-                            print(images[k])
-                            print(image_list.shape)
                             mask_list  = np.array(nib.load(masks[k]).dataobj)
                             select_images_, select_masks_, mask_index = self.input_select(image_list, mask_list)
                             if mask_index == None:
@@ -184,6 +182,7 @@ class Seg_Cardiac_UDA_Dataset(Dataset):
 
         for k, v in infos.items():
             if v['dataset_name'] in self.set_select:
+                selected_dict.update({k:{'images':None, 'masks':None}})
                 selected_dict[k]['images'] = v['views_images']
                 selected_dict[k]['masks']  = v['views_labels']
 
